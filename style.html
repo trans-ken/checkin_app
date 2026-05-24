@@ -1,0 +1,175 @@
+<style>
+  :root {
+    --fg: #1f2328;
+    --muted: #57606a;
+    --border: #d0d7de;
+    --bg: #f6f8fa;
+    --panel: #ffffff;
+    --primary: #1f6feb;
+    --primary-fg: #ffffff;
+    --danger: #cf222e;
+    --ok: #1a7f37;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  header {
+    padding: 24px 20px 8px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  header h1 { margin: 0 0 4px; font-size: 22px; }
+  header .subtitle { margin: 0; color: var(--muted); font-size: 14px; }
+
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 12px 20px 40px;
+    display: grid;
+    gap: 16px;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .panel h2 {
+    margin: 0 0 12px;
+    font-size: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .panel-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .panel-head h2 { border: none; padding: 0; margin: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  input[type="text"], input[type="number"], textarea, select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  textarea { resize: vertical; }
+  input[type="range"] { width: 100%; }
+  input[type="color"] { width: 100%; height: 36px; padding: 2px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
+  .val { font-size: 12px; color: var(--muted); }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .hint { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+
+  .preview-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+      linear-gradient(45deg, #eee 25%, transparent 25%) 0 0 / 16px 16px,
+      linear-gradient(-45deg, #eee 25%, transparent 25%) 0 8px / 16px 16px,
+      linear-gradient(45deg, transparent 75%, #eee 75%) 8px -8px / 16px 16px,
+      linear-gradient(-45deg, transparent 75%, #eee 75%) -8px 0 / 16px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    min-height: 280px;
+  }
+  #qr-canvas {
+    max-width: 100%;
+    height: auto;
+    background: #fff;
+    image-rendering: pixelated;
+  }
+
+  .actions {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  button {
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--fg);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button:hover { background: #f3f4f6; }
+  button.primary {
+    background: var(--primary);
+    color: var(--primary-fg);
+    border-color: var(--primary);
+  }
+  button.primary:hover { filter: brightness(0.95); }
+  button.ghost { background: transparent; }
+  button[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+  .status {
+    margin: 10px 0 0;
+    min-height: 1.5em;
+    font-size: 13px;
+  }
+  .status.ok { color: var(--ok); }
+  .status.err { color: var(--danger); }
+
+  .saved-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .saved-list li {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+    text-align: center;
+  }
+  .saved-list img {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    background: #fafafa;
+    border-radius: 6px;
+  }
+  .saved-list .name {
+    font-size: 12px;
+    margin-top: 6px;
+    word-break: break-all;
+    color: var(--muted);
+  }
+  .saved-list a {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 0 0 24px;
+  }
+</style>

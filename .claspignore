@@ -1,0 +1,7 @@
+# clasp push 時に GAS へ送らないファイル
+**/.git/**
+**/.github/**
+**/README.md
+**/.claspignore
+**/.clasp.json
+**/node_modules/**

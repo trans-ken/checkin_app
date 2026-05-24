@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <?!= include('style'); ?>
+</head>
+<body>
+  <header>
+    <h1>イラスト入りQRコード生成</h1>
+    <p class="subtitle">中央にロゴ・イラストを配置したQRコードを生成し、Google Drive に保存できます。</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>1. QR コードの内容</h2>
+      <label for="qr-text">URL / テキスト</label>
+      <textarea id="qr-text" rows="3" placeholder="https://example.com"></textarea>
+
+      <div class="row">
+        <div>
+          <label for="qr-size">サイズ (px)</label>
+          <input type="number" id="qr-size" value="512" min="128" max="2048" step="32">
+        </div>
+        <div>
+          <label for="qr-ec">誤り訂正レベル</label>
+          <select id="qr-ec">
+            <option value="L">L (約 7%)</option>
+            <option value="M">M (約 15%)</option>
+            <option value="Q">Q (約 25%)</option>
+            <option value="H" selected>H (約 30%) ロゴ入りに推奨</option>
+          </select>
+        </div>
+        <div>
+          <label for="qr-margin">余白 (モジュール数)</label>
+          <input type="number" id="qr-margin" value="2" min="0" max="10" step="1">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="qr-dark">前景色</label>
+          <input type="color" id="qr-dark" value="#000000">
+        </div>
+        <div>
+          <label for="qr-light">背景色</label>
+          <input type="color" id="qr-light" value="#ffffff">
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. イラスト / ロゴ</h2>
+      <label for="logo-file">画像ファイル (PNG / JPG / SVG)</label>
+      <input type="file" id="logo-file" accept="image/*">
+      <p class="hint">透過 PNG 推奨。指定しない場合はロゴなしのQRコードを生成します。</p>
+
+      <div class="row">
+        <div>
+          <label for="logo-size">ロゴサイズ (QR全体に対する %)</label>
+          <input type="range" id="logo-size" min="5" max="35" step="1" value="22">
+          <span id="logo-size-val" class="val">22%</span>
+        </div>
+        <div>
+          <label for="logo-bg">ロゴ背景</label>
+          <select id="logo-bg">
+            <option value="white" selected>白い角丸の下地を敷く</option>
+            <option value="none">下地なし (透過)</option>
+          </select>
+        </div>
+        <div>
+          <label for="logo-shape">ロゴ形状</label>
+          <select id="logo-shape">
+            <option value="rounded" selected>角丸</option>
+            <option value="square">四角</option>
+            <option value="circle">円</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>3. プレビュー</h2>
+      <div class="preview-wrap">
+        <canvas id="qr-canvas" width="512" height="512" aria-label="QRコードプレビュー"></canvas>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="btn-generate" class="primary">生成 / 更新</button>
+        <button type="button" id="btn-download">PNG ダウンロード</button>
+        <button type="button" id="btn-save">Google Drive に保存</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>保存済み QR コード</h2>
+        <button type="button" id="btn-refresh" class="ghost">再読込</button>
+      </div>
+      <p id="folder-link" class="hint"></p>
+      <ul id="saved-list" class="saved-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>Google Apps Script / qrcode.js</small>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <?!= include('javascript'); ?>
+</body>
+</html>

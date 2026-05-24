@@ -1,0 +1,255 @@
+<script>
+(function () {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+
+  const els = {
+    text: $('qr-text'),
+    size: $('qr-size'),
+    ec: $('qr-ec'),
+    margin: $('qr-margin'),
+    dark: $('qr-dark'),
+    light: $('qr-light'),
+    file: $('logo-file'),
+    logoSize: $('logo-size'),
+    logoSizeVal: $('logo-size-val'),
+    logoBg: $('logo-bg'),
+    logoShape: $('logo-shape'),
+    canvas: $('qr-canvas'),
+    btnGen: $('btn-generate'),
+    btnDl: $('btn-download'),
+    btnSave: $('btn-save'),
+    btnRefresh: $('btn-refresh'),
+    status: $('status'),
+    savedList: $('saved-list'),
+    folderLink: $('folder-link'),
+  };
+
+  let logoImage = null;     // HTMLImageElement
+  let lastDataUrl = null;   // 最後に生成された PNG DataURL
+
+  // ---------- イベント ----------
+  els.btnGen.addEventListener('click', () => generate().catch(showError));
+  els.btnDl.addEventListener('click', download);
+  els.btnSave.addEventListener('click', saveToDrive);
+  els.btnRefresh.addEventListener('click', loadSavedList);
+  els.logoSize.addEventListener('input', () => {
+    els.logoSizeVal.textContent = els.logoSize.value + '%';
+  });
+  els.file.addEventListener('change', handleLogoFile);
+
+  // ---------- ロゴ読み込み ----------
+  function handleLogoFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) { logoImage = null; return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        logoImage = img;
+        setStatus('ロゴ画像を読み込みました: ' + file.name, 'ok');
+      };
+      img.onerror = () => showError(new Error('画像の読み込みに失敗しました。'));
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ---------- QR 生成 ----------
+  async function generate() {
+    const text = (els.text.value || '').trim();
+    if (!text) {
+      throw new Error('QR コードに埋め込む URL またはテキストを入力してください。');
+    }
+    const size = clampInt(els.size.value, 128, 2048, 512);
+    const margin = clampInt(els.margin.value, 0, 10, 2);
+    const ec = els.ec.value;
+
+    // 1. QR 部分を一時 canvas に描画
+    const qrCanvas = document.createElement('canvas');
+    await QRCode.toCanvas(qrCanvas, text, {
+      errorCorrectionLevel: ec,
+      width: size,
+      margin: margin,
+      color: {
+        dark: els.dark.value,
+        light: els.light.value,
+      },
+    });
+
+    // 2. プレビュー canvas にコピー
+    const c = els.canvas;
+    c.width = size;
+    c.height = size;
+    const ctx = c.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(qrCanvas, 0, 0, size, size);
+
+    // 3. ロゴを中央に描画
+    if (logoImage) {
+      drawLogo(ctx, size);
+    }
+
+    lastDataUrl = c.toDataURL('image/png');
+    setStatus('QR コードを生成しました。', 'ok');
+  }
+
+  function drawLogo(ctx, size) {
+    const pct = clampInt(els.logoSize.value, 5, 35, 22);
+    const target = Math.round(size * pct / 100);
+
+    // 元画像のアスペクト比を維持して target に収める
+    const iw = logoImage.naturalWidth;
+    const ih = logoImage.naturalHeight;
+    const scale = Math.min(target / iw, target / ih);
+    const dw = Math.round(iw * scale);
+    const dh = Math.round(ih * scale);
+    const dx = Math.round((size - dw) / 2);
+    const dy = Math.round((size - dh) / 2);
+
+    // 背景下地 (誤読防止)
+    if (els.logoBg.value === 'white') {
+      const pad = Math.round(Math.max(dw, dh) * 0.12);
+      const bx = dx - pad;
+      const by = dy - pad;
+      const bw = dw + pad * 2;
+      const bh = dh + pad * 2;
+      ctx.save();
+      ctx.fillStyle = els.light.value || '#ffffff';
+      const shape = els.logoShape.value;
+      if (shape === 'circle') {
+        const r = Math.max(bw, bh) / 2;
+        ctx.beginPath();
+        ctx.arc(bx + bw / 2, by + bh / 2, r, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (shape === 'rounded') {
+        roundedRect(ctx, bx, by, bw, bh, Math.round(pad * 1.2));
+        ctx.fill();
+      } else {
+        ctx.fillRect(bx, by, bw, bh);
+      }
+      ctx.restore();
+    }
+
+    // ロゴ本体 (形状に応じてクリップ)
+    ctx.save();
+    if (els.logoShape.value === 'circle') {
+      ctx.beginPath();
+      ctx.arc(dx + dw / 2, dy + dh / 2, Math.min(dw, dh) / 2, 0, Math.PI * 2);
+      ctx.clip();
+    } else if (els.logoShape.value === 'rounded') {
+      roundedRect(ctx, dx, dy, dw, dh, Math.round(Math.min(dw, dh) * 0.15));
+      ctx.clip();
+    }
+    ctx.drawImage(logoImage, dx, dy, dw, dh);
+    ctx.restore();
+  }
+
+  function roundedRect(ctx, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y,     x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x,     y + h, r);
+    ctx.arcTo(x,     y + h, x,     y,     r);
+    ctx.arcTo(x,     y,     x + w, y,     r);
+    ctx.closePath();
+  }
+
+  // ---------- ダウンロード / 保存 ----------
+  function download() {
+    if (!lastDataUrl) {
+      setStatus('先に「生成 / 更新」を押してください。', 'err');
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = lastDataUrl;
+    a.download = suggestFilename() + '.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function saveToDrive() {
+    if (!lastDataUrl) {
+      setStatus('先に「生成 / 更新」を押してください。', 'err');
+      return;
+    }
+    setStatus('Google Drive に保存中…');
+    els.btnSave.disabled = true;
+    google.script.run
+      .withSuccessHandler((res) => {
+        els.btnSave.disabled = false;
+        setStatus('保存しました: ' + res.name, 'ok');
+        loadSavedList();
+      })
+      .withFailureHandler((err) => {
+        els.btnSave.disabled = false;
+        showError(err);
+      })
+      .saveQrToDrive(lastDataUrl, suggestFilename());
+  }
+
+  function suggestFilename() {
+    const t = (els.text.value || '').trim();
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    if (!t) return 'qrcode_' + stamp;
+    const head = t.replace(/^https?:\/\//, '').replace(/[\\/:*?"<>|\s]/g, '_').slice(0, 30);
+    return 'qrcode_' + head + '_' + stamp;
+  }
+
+  // ---------- 一覧 ----------
+  function loadSavedList() {
+    google.script.run
+      .withSuccessHandler(renderSavedList)
+      .withFailureHandler(showError)
+      .listSavedQrs();
+  }
+
+  function renderSavedList(res) {
+    els.folderLink.innerHTML = '保存先フォルダ: <a href="' + res.folderUrl +
+      '" target="_blank" rel="noopener">Drive で開く</a>';
+    els.savedList.innerHTML = '';
+    if (!res.files.length) {
+      els.savedList.innerHTML = '<li style="grid-column: 1/-1; text-align:left; border:none; padding:0; color:var(--muted); font-size:13px;">まだ保存された QR コードはありません。</li>';
+      return;
+    }
+    for (const f of res.files) {
+      const li = document.createElement('li');
+      li.innerHTML =
+        '<a href="' + f.url + '" target="_blank" rel="noopener">' +
+        '<img src="' + f.thumbnail + '" alt="' + escapeHtml(f.name) + '">' +
+        '</a>' +
+        '<div class="name">' + escapeHtml(f.name) + '</div>';
+      els.savedList.appendChild(li);
+    }
+  }
+
+  // ---------- ユーティリティ ----------
+  function clampInt(v, min, max, fallback) {
+    const n = parseInt(v, 10);
+    if (Number.isNaN(n)) return fallback;
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function setStatus(msg, kind) {
+    els.status.textContent = msg;
+    els.status.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  function showError(err) {
+    const msg = (err && err.message) ? err.message : String(err);
+    setStatus('エラー: ' + msg, 'err');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  // 初期ロード
+  loadSavedList();
+})();
+</script>
