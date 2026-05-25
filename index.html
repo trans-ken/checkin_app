@@ -51,9 +51,21 @@
 
     <section class="panel">
       <h2>2. イラスト / ロゴ</h2>
-      <label for="logo-file">画像ファイル (PNG / JPG / SVG)</label>
-      <input type="file" id="logo-file" accept="image/*">
-      <p class="hint">透過 PNG 推奨。指定しない場合はロゴなしのQRコードを生成します。</p>
+
+      <div class="note">
+        <strong>推奨画像仕様</strong>
+        <ul>
+          <li><strong>形式:</strong> 透過 PNG (推奨) / JPG / SVG</li>
+          <li><strong>形状:</strong> 正方形 (1:1)。長方形でもアスペクト比を保ったまま中央に収まります</li>
+          <li><strong>解像度:</strong> 256×256 px 以上、推奨は 512×512 px 以上 (拡大時のジャギ防止)</li>
+          <li><strong>ファイルサイズ:</strong> 2 MB 以下を目安 (ブラウザ処理速度の都合)</li>
+          <li><strong>色味:</strong> QR 本体と十分なコントラストがある色 (淡色ロゴは「白い下地」をオンに)</li>
+        </ul>
+      </div>
+
+      <label for="logo-file">画像ファイル</label>
+      <input type="file" id="logo-file" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+      <p class="hint" id="logo-info">指定しない場合はロゴなしの QR コードを生成します。</p>
 
       <div class="row">
         <div>
@@ -77,6 +89,14 @@
           </select>
         </div>
       </div>
+
+      <p class="hint">
+        <strong>ロゴサイズの目安:</strong>
+        誤り訂正レベルが <code>H</code> なら 〜25%、<code>Q</code> なら 〜20%、
+        <code>M</code> なら 〜15%、<code>L</code> なら 〜10% 程度まで。
+        大きすぎると読み取り不能になります。生成後は実機 (スマホ) でスキャン確認を推奨します。
+      </p>
+      <p id="ec-warning" class="warn" hidden></p>
     </section>
 
     <section class="panel">

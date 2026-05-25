@@ -12,10 +12,12 @@
     dark: $('qr-dark'),
     light: $('qr-light'),
     file: $('logo-file'),
+    logoInfo: $('logo-info'),
     logoSize: $('logo-size'),
     logoSizeVal: $('logo-size-val'),
     logoBg: $('logo-bg'),
     logoShape: $('logo-shape'),
+    ecWarning: $('ec-warning'),
     canvas: $('qr-canvas'),
     btnGen: $('btn-generate'),
     btnDl: $('btn-download'),
@@ -25,6 +27,12 @@
     savedList: $('saved-list'),
     folderLink: $('folder-link'),
   };
+
+  // 誤り訂正レベル別のロゴサイズ推奨上限 (%)
+  const EC_MAX_LOGO = { L: 10, M: 15, Q: 20, H: 25 };
+  // ロゴ画像ファイルサイズ上限 (2 MB) / 推奨最小解像度
+  const LOGO_MAX_BYTES = 2 * 1024 * 1024;
+  const LOGO_RECOMMENDED_MIN_PX = 256;
 
   let logoImage = null;     // HTMLImageElement
   let lastDataUrl = null;   // 最後に生成された PNG DataURL
@@ -36,24 +44,84 @@
   els.btnRefresh.addEventListener('click', loadSavedList);
   els.logoSize.addEventListener('input', () => {
     els.logoSizeVal.textContent = els.logoSize.value + '%';
+    updateEcWarning();
   });
+  els.ec.addEventListener('change', updateEcWarning);
   els.file.addEventListener('change', handleLogoFile);
+  updateEcWarning();
 
   // ---------- ロゴ読み込み ----------
   function handleLogoFile(e) {
     const file = e.target.files && e.target.files[0];
-    if (!file) { logoImage = null; return; }
+    if (!file) {
+      logoImage = null;
+      els.logoInfo.textContent = '指定しない場合はロゴなしの QR コードを生成します。';
+      els.logoInfo.className = 'hint';
+      return;
+    }
+
+    // ファイルサイズチェック
+    if (file.size > LOGO_MAX_BYTES) {
+      logoImage = null;
+      const mb = (file.size / 1024 / 1024).toFixed(2);
+      els.logoInfo.textContent =
+        '⚠ ファイルサイズが大きすぎます (' + mb + ' MB / 上限 2 MB)。圧縮またはリサイズしてください。';
+      els.logoInfo.className = 'hint warn';
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (ev) => {
       const img = new Image();
       img.onload = () => {
         logoImage = img;
-        setStatus('ロゴ画像を読み込みました: ' + file.name, 'ok');
+
+        // 情報・警告メッセージ
+        const w = img.naturalWidth, h = img.naturalHeight;
+        const notes = [];
+        notes.push(file.name + ' (' + w + '×' + h + ' px, ' +
+          (file.size / 1024).toFixed(0) + ' KB)');
+        const warnings = [];
+        if (w < LOGO_RECOMMENDED_MIN_PX || h < LOGO_RECOMMENDED_MIN_PX) {
+          warnings.push('解像度が低めです (推奨 ' + LOGO_RECOMMENDED_MIN_PX + ' px 以上)。拡大時にぼやける可能性があります。');
+        }
+        const ratio = Math.max(w, h) / Math.min(w, h);
+        if (ratio > 1.3) {
+          warnings.push('正方形でないため、中央にフィットさせて配置します (アスペクト比は保持)。');
+        }
+        if (warnings.length) {
+          els.logoInfo.innerHTML = '✓ ' + escapeHtml(notes[0]) + '<br>⚠ ' + warnings.map(escapeHtml).join('<br>⚠ ');
+          els.logoInfo.className = 'hint warn';
+        } else {
+          els.logoInfo.textContent = '✓ ' + notes[0];
+          els.logoInfo.className = 'hint';
+        }
+        setStatus('ロゴ画像を読み込みました。「生成 / 更新」を押してください。', 'ok');
       };
-      img.onerror = () => showError(new Error('画像の読み込みに失敗しました。'));
+      img.onerror = () => {
+        logoImage = null;
+        els.logoInfo.textContent = '⚠ 画像の読み込みに失敗しました。形式 (PNG/JPG/SVG/WebP) を確認してください。';
+        els.logoInfo.className = 'hint warn';
+      };
       img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  // ---------- ロゴサイズと誤り訂正レベルの整合チェック ----------
+  function updateEcWarning() {
+    const ec = els.ec.value;
+    const pct = parseInt(els.logoSize.value, 10);
+    const max = EC_MAX_LOGO[ec];
+    if (pct > max) {
+      els.ecWarning.hidden = false;
+      els.ecWarning.textContent =
+        '⚠ 誤り訂正レベル ' + ec + ' に対してロゴサイズ ' + pct + '% は大きすぎます (推奨 ' + max + '% 以下)。' +
+        '読み取れなくなる可能性があります。レベル H に上げるか、ロゴを縮小してください。';
+    } else {
+      els.ecWarning.hidden = true;
+      els.ecWarning.textContent = '';
+    }
   }
 
   // ---------- QR 生成 ----------
