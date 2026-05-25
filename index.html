@@ -107,7 +107,15 @@
     <small>Google Apps Script / qrcode.js</small>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script>
+    // CDN フォールバック (jsDelivr が失敗した場合は unpkg から再読込)
+    if (typeof window.qrcode !== 'function') {
+      document.write(
+        '<script src="https://unpkg.com/qrcode-generator@1.4.4/qrcode.min.js"><\/script>'
+      );
+    }
+  </script>
   <?!= include('javascript'); ?>
 </body>
 </html>

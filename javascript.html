@@ -58,6 +58,9 @@
 
   // ---------- QR 生成 ----------
   async function generate() {
+    if (typeof window.qrcode !== 'function') {
+      throw new Error('QR ライブラリの読み込みに失敗しました。ネットワーク (CDN) が許可されているか確認してください。');
+    }
     const text = (els.text.value || '').trim();
     if (!text) {
       throw new Error('QR コードに埋め込む URL またはテキストを入力してください。');
@@ -66,29 +69,45 @@
     const margin = clampInt(els.margin.value, 0, 10, 2);
     const ec = els.ec.value;
 
-    // 1. QR 部分を一時 canvas に描画
-    const qrCanvas = document.createElement('canvas');
-    await QRCode.toCanvas(qrCanvas, text, {
-      errorCorrectionLevel: ec,
-      width: size,
-      margin: margin,
-      color: {
-        dark: els.dark.value,
-        light: els.light.value,
-      },
-    });
+    // qrcode-generator: typeNumber=0 で容量から自動決定
+    const qr = window.qrcode(0, ec);
+    qr.addData(text);
+    qr.make();
 
-    // 2. プレビュー canvas にコピー
+    const moduleCount = qr.getModuleCount();
+    const totalModules = moduleCount + margin * 2;
+    // モジュール 1 つあたりのピクセル数 (整数化してモアレ回避)
+    const cell = Math.max(1, Math.floor(size / totalModules));
+    const drawnSize = cell * totalModules;
+
     const c = els.canvas;
-    c.width = size;
-    c.height = size;
+    c.width = drawnSize;
+    c.height = drawnSize;
     const ctx = c.getContext('2d');
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(qrCanvas, 0, 0, size, size);
 
-    // 3. ロゴを中央に描画
+    // 背景
+    ctx.fillStyle = els.light.value || '#ffffff';
+    ctx.fillRect(0, 0, drawnSize, drawnSize);
+
+    // モジュール (前景)
+    ctx.fillStyle = els.dark.value || '#000000';
+    for (let r = 0; r < moduleCount; r++) {
+      for (let cIdx = 0; cIdx < moduleCount; cIdx++) {
+        if (qr.isDark(r, cIdx)) {
+          ctx.fillRect(
+            (cIdx + margin) * cell,
+            (r + margin) * cell,
+            cell,
+            cell
+          );
+        }
+      }
+    }
+
+    // ロゴ
     if (logoImage) {
-      drawLogo(ctx, size);
+      drawLogo(ctx, drawnSize);
     }
 
     lastDataUrl = c.toDataURL('image/png');
