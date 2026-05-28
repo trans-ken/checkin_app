@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>トランジスターズ株式会社｜リニューアル案（C：温かい教育・人）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF7F2; --card:#FFFFFF; --green:#2E7D5B; --green-d:#245C45;
+    --accent:#F2994A; --accent-d:#E07E2C; --text:#33312E; --muted:#6E6A64;
+    --line:#ECE6DC; --radius:22px; --shadow:0 14px 40px rgba(46,125,91,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans JP",sans-serif;color:var(--text);background:var(--bg);line-height:1.8;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.brand{font-family:"Zen Maru Gothic",sans-serif}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:.5em;padding:.85em 1.7em;border-radius:999px;font-weight:700;transition:.2s;cursor:pointer;border:none;font-size:1rem}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 20px rgba(242,153,74,.35)}
+  .btn-primary:hover{background:var(--accent-d);transform:translateY(-2px)}
+  .btn-ghost{background:#fff;color:var(--green-d);border:2px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green)}
+
+  /* prototype ribbon */
+  .ribbon{background:var(--green-d);color:#fff;text-align:center;font-size:.8rem;padding:6px;letter-spacing:.04em}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(250,247,242,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:.6em;font-weight:900;font-size:1.25rem;color:var(--green-d)}
+  .brand .mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--accent));display:grid;place-items:center;color:#fff;font-size:1.1rem}
+  .menu{display:flex;gap:28px;align-items:center;font-weight:500}
+  .menu a{color:var(--muted);transition:.2s}
+  .menu a:hover{color:var(--green)}
+  .menu .btn{padding:.55em 1.2em;font-size:.95rem}
+  .burger{display:none;font-size:1.6rem;color:var(--green-d);background:none;border:none}
+
+  /* hero */
+  .hero{position:relative;padding:72px 0 40px;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero .eyebrow{display:inline-block;background:#EAF3EE;color:var(--green-d);font-weight:700;font-size:.8rem;padding:.4em 1em;border-radius:999px;margin-bottom:18px}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:900;line-height:1.4;color:var(--green-d);letter-spacing:.02em}
+  .hero h1 .hl{color:var(--accent)}
+  .hero p.lead{margin:22px 0 30px;font-size:1.08rem;color:var(--muted);max-width:34em}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-photo{position:relative;aspect-ratio:4/3.4;border-radius:30px;background:linear-gradient(140deg,#DCEFE3,#FCE7CF);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--green-d)}
+  .hero-photo span{font-family:"Zen Maru Gothic";font-weight:700;opacity:.55}
+  .hero-photo .badge{position:absolute;bottom:-18px;left:-18px;background:#fff;border-radius:18px;padding:14px 18px;box-shadow:var(--shadow);font-weight:700;color:var(--green);font-size:.9rem}
+  .blob{position:absolute;border-radius:50%;filter:blur(8px);opacity:.5;z-index:-1}
+  .blob.b1{width:280px;height:280px;background:#DCEFE3;top:-60px;right:-40px}
+  .blob.b2{width:200px;height:200px;background:#FCE7CF;bottom:-30px;left:-60px}
+
+  /* wave divider */
+  .wave{display:block;width:100%;height:60px}
+
+  /* sections */
+  section.block{padding:64px 0}
+  .sec-head{text-align:center;max-width:40em;margin:0 auto 44px}
+  .sec-head .kicker{color:var(--accent);font-weight:700;letter-spacing:.1em;font-size:.85rem}
+  .sec-head h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;color:var(--green-d);margin-top:8px}
+  .sec-head p{color:var(--muted);margin-top:12px}
+
+  /* services */
+  #services{background:#fff}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:30px;transition:.25s}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:transparent}
+  .card .ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin-bottom:16px;background:#EAF3EE;color:var(--green)}
+  .card:nth-child(even) .ico{background:#FCEBD9;color:var(--accent-d)}
+  .card h3{font-size:1.2rem;color:var(--green-d);margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+
+  /* strengths */
+  .points{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .point{text-align:center;padding:14px}
+  .point .num{font-family:"Zen Maru Gothic";font-weight:900;font-size:2rem;color:var(--accent);display:block}
+  .point h3{color:var(--green-d);margin:10px 0 6px;font-size:1.1rem}
+  .point p{color:var(--muted);font-size:.92rem}
+
+  /* news */
+  #news{background:#fff}
+  .news-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:4px}
+  .news-item{display:flex;gap:20px;align-items:center;padding:18px 8px;border-bottom:1px solid var(--line)}
+  .news-item time{color:var(--accent-d);font-weight:700;font-size:.85rem;white-space:nowrap}
+  .news-item .tag{background:#EAF3EE;color:var(--green-d);font-size:.72rem;font-weight:700;padding:.2em .8em;border-radius:999px}
+  .news-item p{font-size:.96rem}
+
+  /* CTA */
+  .cta{margin:0 auto;max-width:1080px;background:linear-gradient(135deg,var(--green),var(--green-d));border-radius:32px;padding:54px 32px;text-align:center;color:#fff;box-shadow:var(--shadow)}
+  .cta h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:900;margin-bottom:12px}
+  .cta p{opacity:.92;margin-bottom:26px}
+
+  /* footer */
+  footer{background:#2B2B2B;color:#cfcbc4;padding:54px 0 28px;margin-top:64px;font-size:.92rem}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:30px;margin-bottom:30px}
+  footer .brand{color:#fff;margin-bottom:12px}
+  footer h4{color:#fff;font-family:"Zen Maru Gothic";margin-bottom:12px;font-size:1rem}
+  footer a{color:#cfcbc4;display:block;padding:4px 0}
+  footer a:hover{color:var(--accent)}
+  .copy{border-top:1px solid #444;padding-top:18px;text-align:center;color:#8d8980;font-size:.82rem}
+
+  @media(max-width:860px){
+    .hero-grid,.cards,.points,.foot-grid{grid-template-columns:1fr}
+    .menu{display:none}
+    .burger{display:block}
+    .hero-photo{order:-1}
+  }
+</style>
+</head>
+<body>
+
+<div class="ribbon">これはデザイン確認用のプロトタイプです（C：温かい教育・人 案／写真・文言は仮）</div>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand"><span class="mark">T</span>トランジスターズ</div>
+    <nav class="menu">
+      <a href="#services">サービス</a>
+      <a href="#strengths">選ばれる理由</a>
+      <a href="#news">お知らせ</a>
+      <a href="#about">会社概要</a>
+      <a href="#contact" class="btn btn-primary">お問い合わせ</a>
+    </nav>
+    <button class="burger" aria-label="メニュー">☰</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="blob b1"></span><span class="blob b2"></span>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">教育 × ビジネス の人材開発パートナー</span>
+      <h1>人の成長に、<br><span class="hl">そっと寄り添う。</span></h1>
+      <p class="lead">教育とビジネス、両方の現場で培った知見で、一人ひとりとチームの「できる」を引き出します。コンサルティングから研修・業務委託まで、人が育つ仕組みをご一緒に。</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">まずは相談する →</a>
+        <a href="#services" class="btn btn-ghost">サービスを見る</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <span>人物写真<br>（学び・対話のシーン）</span>
+      <div class="badge">🌱 一人ひとりに伴走</div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="#ffffff" d="M0,30 C360,70 1080,-10 1440,30 L1440,60 L0,60 Z"></path></svg>
+
+<!-- SERVICES -->
+<section class="block" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">SERVICES</span>
+      <h2>提供サービス</h2>
+      <p>教育とビジネスの両面から、人と組織の成長を支援します。</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="ico">📚</div>
+        <h3>教育分野コンサルティング</h3>
+        <p>STEAM・プログラミング教育など、これからの学びの場づくりを企画から伴走支援します。</p>
+      </div>
+      <div class="card">
+        <div class="ico">📈</div>
+        <h3>ビジネス分野コンサルティング</h3>
+        <p>組織・人材の課題に寄り添い、現場で機能する成長の仕組みづくりをサポートします。</p>
+      </div>
+      <div class="card">
+        <div class="ico">🤝</div>
+        <h3>業務委託</h3>
+        <p>専門人材が実務を担い、プロジェクトの推進力に。必要な力を、必要なだけ。</p>
+      </div>
+      <div class="card">
+        <div class="ico">🎓</div>
+        <h3>研修・人材開発</h3>
+        <p>階層別・テーマ別の研修プログラムで、現場で活きる力を育てます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none"><path fill="#FAF7F2" d="M0,30 C360,70 1080,-10 1440,30 L1440,60 L0,60 Z"></path></svg>
+
+<!-- STRENGTHS -->
+<section class="block" id="strengths">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">WHY US</span>
+      <h2>選ばれる理由</h2>
+    </div>
+    <div class="points">
+      <div class="point"><span class="num">01</span><h3>教育 × ビジネスの両輪</h3><p>学びの専門性と経営の視点。両方を持つから、机上で終わらない提案ができます。</p></div>
+      <div class="point"><span class="num">02</span><h3>現場主義の伴走支援</h3><p>提案して終わりではなく、定着するまで一緒に走り続けます。</p></div>
+      <div class="point"><span class="num">03</span><h3>AI・STEAMの知見</h3><p>最新テクノロジーを学びと業務に橋渡しし、次の一歩を後押しします。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="block" id="news">
+  <div class="wrap">
+    <div class="sec-head"><span class="kicker">NEWS</span><h2>お知らせ</h2></div>
+    <div class="news-list">
+      <div class="news-item"><time>2026.05.01</time><span class="tag">お知らせ</span><p>コーポレートサイトをリニューアルしました。</p></div>
+      <div class="news-item"><time>2026.04.15</time><span class="tag">研修</span><p>新年度向け人材開発プログラムの受付を開始しました。</p></div>
+      <div class="news-item"><time>2026.03.20</time><span class="tag">教育</span><p>STEAM教育に関する事例を公開予定です。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="block" id="contact">
+  <div class="cta">
+    <h2>人が育つ仕組みを、ご一緒に。</h2>
+    <p>ご相談・お見積もりは無料です。まずはお気軽にお問い合わせください。</p>
+    <a href="mailto:info@transistors.co.jp" class="btn btn-primary">お問い合わせはこちら →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="about">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand"><span class="mark">T</span>トランジスターズ株式会社</div>
+        <p>教育・ビジネス分野のコンサルティング、業務委託、研修など人材開発サービスを提供しています。</p>
+      </div>
+      <div>
+        <h4>サイトマップ</h4>
+        <a href="#services">サービス</a>
+        <a href="#strengths">選ばれる理由</a>
+        <a href="#news">お知らせ</a>
+        <a href="#contact">お問い合わせ</a>
+      </div>
+      <div>
+        <h4>会社情報</h4>
+        <a href="mailto:info@transistors.co.jp">info@transistors.co.jp</a>
+        <a href="#">所在地（仮）</a>
+        <a href="#">会社概要</a>
+      </div>
+    </div>
+    <div class="copy">© 2026 トランジスターズ株式会社</div>
+  </div>
+</footer>
+
+</body>
+</html>
