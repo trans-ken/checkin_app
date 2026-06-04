@@ -1,0 +1,47 @@
+/*
+Theme Name: transistors
+Theme URI: https://transistors.co.jp/
+Author: transistors Co., Ltd.
+Description: 教育・スポーツ・ビジネス・アプリ開発をスイッチする、トランジスターズのコーポレートサイト用テーマ。Claude Design で作成した静的サイトをピクセル一致で WordPress 化したクラシックテーマ。
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: transistors
+*/
+
+/* ===========================================================
+   このファイルはテーマのメタ情報用です。
+   実体のデザインは assets/styles.css（デザイントークン）と
+   assets/site.css（共通スタイル）に入っており、functions.php で
+   読み込んでいます。ここには WordPress 固有の微調整のみ記述します。
+   =========================================================== */
+
+/* 管理バー表示時に sticky ヘッダーが隠れないように */
+.admin-bar header { top: 32px; }
+@media screen and (max-width: 782px) {
+  .admin-bar header { top: 46px; }
+}
+
+/* WordPress 標準クラスの最低限の体裁 */
+.aligncenter { display: block; margin-left: auto; margin-right: auto; }
+.alignright { float: right; margin: 0 0 1em 1em; }
+.alignleft { float: left; margin: 0 1em 1em 0; }
+img.wp-post-image, .wp-block-image img { max-width: 100%; height: auto; }
+.screen-reader-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); }
+
+/* 投稿本文の素の体裁（single/page の the_content） */
+.entry-content { font-size: 16px; line-height: 1.9; color: var(--color-fg); }
+.entry-content p { margin: 0 0 1.4em; }
+.entry-content h2 { font-family: var(--font-display); font-weight: 700; font-size: 28px; color: var(--navy-800); margin: 1.6em 0 .6em; }
+.entry-content h3 { font-family: var(--font-display); font-weight: 700; font-size: 21px; color: var(--navy-800); margin: 1.4em 0 .5em; }
+.entry-content a { color: var(--color-link); }
+.entry-content ul, .entry-content ol { padding-left: 1.4em; margin: 0 0 1.4em; }
+.entry-content img { border-radius: 12px; }
+
+/* ページネーション */
+.pagination { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 48px; }
+.pagination .page-numbers { font-family: var(--font-mono); font-size: 14px; padding: 8px 14px; border: 1px solid var(--color-border); border-radius: 999px; text-decoration: none; color: var(--navy-700); }
+.pagination .page-numbers.current { background: var(--azure-500); color: #fff; border-color: var(--azure-500); }

@@ -1,0 +1,253 @@
+/* ============================================================
+   transistors / トランジスターズ — Design Tokens
+   colors_and_type.css
+   ------------------------------------------------------------
+   Source of truth: the official "transistors_color" PowerPoint
+   theme + company website. Brand image color is the azure
+   #00A0DD; deep navy #052C49 anchors text; leather brown
+   #7D4930 ties to the leather-goods line. Type is a warm
+   rounded gothic (Hiragino Maru Gothic Pro in the source,
+   substituted on web with Zen Maru Gothic).
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---------- BRAND CORE ---------- */
+  --tr-azure:        #00A0DD;  /* primary image color (theme dk2) */
+  --tr-azure-bar:    #009CDD;  /* exact azure used for slide bars */
+  --tr-navy:         #052C49;  /* deep anchor / ink (theme accent2) */
+  --tr-leather:      #7D4930;  /* warm secondary, leather goods (accent1) */
+
+  /* ---------- AZURE / SIGNAL BLUE RAMP ---------- */
+  --azure-50:  #E8F7FC;
+  --azure-100: #C6ECF8;
+  --azure-200: #93DBF0;
+  --azure-300: #57C6E8;
+  --azure-400: #21AEDF;
+  --azure-500: #00A0DD;   /* brand */
+  --azure-600: #0089C2;
+  --azure-700: #0070A1;
+  --azure-800: #075A80;
+  --azure-900: #0A3F5C;
+
+  /* ---------- NAVY / INK RAMP ---------- */
+  --navy-900: #03203A;
+  --navy-800: #052C49;   /* brand navy */
+  --navy-700: #0B3D5E;
+  --navy-600: #14506F;
+  --navy-500: #2A6480;
+
+  /* ---------- LEATHER RAMP ---------- */
+  --leather-700: #5E3724;
+  --leather-600: #6E4029;
+  --leather-500: #7D4930;   /* brand leather */
+  --leather-400: #9A6347;
+  --leather-300: #BE9079;
+  --leather-100: #EADED5;
+
+  /* ---------- SUPPORTING ACCENTS (from theme) ---------- */
+  --signal-yellow: #F0E130;  /* "amplify" highlight (accent4) */
+  --signal-red:    #CE2838;  /* alert / energy (accent3) */
+  --sky:           #5B9BD5;  /* info (accent5) */
+  --grass:         #70AD47;  /* success / "ON" (accent6) */
+
+  /* ---------- NEUTRALS (faint cool tint to harmonize w/ azure) ---------- */
+  --white:    #FFFFFF;
+  --paper:    #F6FAFC;   /* subtle azure-tinted page surface */
+  --n-50:  #F1F5F8;
+  --n-100: #E6ECF1;
+  --n-200: #D6DEE5;
+  --n-300: #BCC8D1;
+  --n-400: #95A4AF;
+  --n-500: #6F7E8A;
+  --n-600: #52606B;
+  --n-700: #3A454E;
+  --n-800: #232C33;
+  --n-900: #12181C;
+
+  /* ============================================================
+     SEMANTIC TOKENS — prefer these in components
+     ============================================================ */
+  --color-bg:            var(--white);
+  --color-surface:       var(--paper);
+  --color-surface-2:     var(--n-50);
+  --color-fg:            var(--navy-800);   /* body text = navy ink, never pure black */
+  --color-fg-strong:     var(--navy-900);
+  --color-fg-muted:      var(--n-600);
+  --color-fg-subtle:     var(--n-500);
+  --color-fg-on-dark:    #EAF4F9;
+
+  --color-primary:        var(--azure-500);
+  --color-primary-hover:  var(--azure-600);
+  --color-primary-press:  var(--azure-700);
+  --color-primary-soft:   var(--azure-50);
+  --color-on-primary:     #FFFFFF;
+
+  --color-ink:            var(--navy-800);   /* dark surfaces, footers, bars */
+  --color-accent:         var(--leather-500);
+  --color-highlight:      var(--signal-yellow);
+
+  --color-success: var(--grass);
+  --color-danger:  var(--signal-red);
+  --color-info:    var(--sky);
+
+  --color-border:        var(--n-200);
+  --color-border-strong: var(--n-300);
+  --color-divider:       var(--n-100);
+  --color-link:          #0563C1;
+  --color-focus:         var(--azure-400);
+
+  /* ============================================================
+     TYPOGRAPHY
+     Display: Zen Maru Gothic  (rounded gothic ≈ Hiragino Maru Gothic Pro)
+     Body/UI: Zen Kaku Gothic New (clean squared gothic, harmonizes)
+     Mono:    IBM Plex Mono  (technical eyebrows, data, the "signal" voice)
+     ============================================================ */
+  --font-display: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'Hiragino Maru Gothic Pro', 'ヒラギノ丸ゴ ProN', system-ui, sans-serif;
+  --font-sans:    'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'メイリオ', Meiryo, system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    700;
+  --fw-black:   900;
+
+  /* Type scale (1.250 major-third-ish, tuned for JP legibility) */
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-md:   18px;
+  --text-lg:   22px;
+  --text-xl:   28px;
+  --text-2xl:  36px;
+  --text-3xl:  46px;
+  --text-4xl:  58px;
+  --text-5xl:  74px;
+
+  --leading-tight:   1.18;
+  --leading-snug:    1.35;
+  --leading-normal:  1.6;   /* JP body wants generous leading */
+  --leading-relaxed: 1.85;
+
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+  --tracking-mono:   0.08em;  /* mono eyebrow labels */
+
+  /* ---------- RADII (rounded gothic → friendly corners) ---------- */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-xl:   28px;
+  --radius-pill: 999px;
+
+  /* ---------- SPACING (4px base) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* ---------- ELEVATION (soft, navy-tinted — never harsh black) ---------- */
+  --shadow-xs: 0 1px 2px rgba(5, 44, 73, 0.06);
+  --shadow-sm: 0 1px 3px rgba(5, 44, 73, 0.08), 0 1px 2px rgba(5, 44, 73, 0.05);
+  --shadow-md: 0 4px 12px rgba(5, 44, 73, 0.09), 0 2px 4px rgba(5, 44, 73, 0.05);
+  --shadow-lg: 0 12px 28px rgba(5, 44, 73, 0.12), 0 4px 10px rgba(5, 44, 73, 0.06);
+  --shadow-xl: 0 24px 48px rgba(5, 44, 73, 0.16);
+  --ring-focus: 0 0 0 3px rgba(0, 160, 221, 0.35);
+
+  /* ---------- MOTION ---------- */
+  --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 360ms;
+
+  /* ---------- LAYOUT ---------- */
+  --container: 1200px;
+  --container-narrow: 880px;
+  --bar-height: 8px;  /* signature azure bar thickness (scaled per surface) */
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT DEFAULTS
+   Link colors_and_type.css and these apply to raw HTML.
+   ============================================================ */
+.tr-scope, body.tr {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-fg);
+  background: var(--color-bg);
+  font-feature-settings: "palt" 1; /* JP proportional metrics — tighter kana */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tr-h1, .tr-scope h1 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-fg-strong);
+}
+.tr-h2, .tr-scope h2 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  color: var(--color-fg-strong);
+}
+.tr-h3, .tr-scope h3 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-medium);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--color-fg-strong);
+}
+.tr-h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+.tr-body, .tr-scope p {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-fg);
+  text-wrap: pretty;
+}
+.tr-lead {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-fg-muted);
+}
+.tr-small { font-size: var(--text-sm); color: var(--color-fg-muted); }
+
+/* Mono eyebrow / kicker — the "signal" label. Used above headings. */
+.tr-eyebrow {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+.tr-code, code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--color-surface-2);
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-xs);
+}
