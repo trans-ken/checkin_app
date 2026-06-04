@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>お問い合わせ｜transistors株式会社</title><meta name="description" content="トランジスターズへのお問い合わせ。"><meta property="og:title" content="お問い合わせ｜transistors株式会社"><meta property="og:type" content="website">
+<link rel="icon" href="assets/transistors-badge.svg"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="site.css">
+</head><body>
+<header><div class="topbar"></div><nav class="main">
+    <a class="brand" href="index.html"><img src="assets/transistors-mark.svg" alt=""><b>transistors</b></a>
+    <div class="has-menu hidem"><a class="lnk" href="index.html#services">事業内容 ▾</a><div class="menu">
+      <a href="education.html"><span class="dot" style="background:var(--azure-500)"></span><span class="mn">教育</span><span class="mp">/education</span></a>
+      <a href="sports.html"><span class="dot" style="background:var(--navy-800)"></span><span class="mn">スポーツ</span><span class="mp">/sports</span></a>
+      <a href="business.html"><span class="dot" style="background:var(--navy-800)"></span><span class="mn">ビジネス</span><span class="mp">/business</span></a><a href="appdev.html"><span class="dot" style="background:var(--navy-800)"></span><span class="mn">アプリ開発</span><span class="mp">/appdev</span></a></div></div>
+    <a class="lnk hidem" href="about.html">About Us</a><a class="lnk hidem" href="blog.html">Blog</a>
+    <a class="btn btn-pri" href="contact.html">お問い合わせ</a></nav></header>
+
+<section class="phead"><div class="wrap"><div class="k2">// CONTACT</div><h1>お問い合わせ</h1><p>ご質問・ご相談はこちらのフォームから承ります。担当者より折り返しご連絡いたします。</p></div></section>
+<section class="sec"><div class="wrap">
+  <form class="form" onsubmit="this.style.display='none';document.getElementById('sent').style.display='block';return false;">
+    <div class="field two">
+      <div><label>お名前</label><input type="text" name="お名前" placeholder="山田 太郎" required></div>
+      <div><label>メールアドレス</label><input type="email" name="メールアドレス" placeholder="you@example.com" required></div>
+    </div>
+    <div class="field"><label>お問い合わせ種別</label><select name="種別"><option>教育について</option><option>スポーツについて</option><option>ビジネス・アプリ開発について</option><option>その他</option></select></div>
+    <div class="field"><label>お問い合わせ内容</label><textarea name="内容" rows="6" required></textarea></div>
+    <button class="btn btn-pri btn-lg" type="submit" style="width:100%">送信する</button>
+    <p style="font-size:12.5px;color:var(--color-fg-subtle);text-align:center;margin:0">※ これはテスト表示です。WordPress版では、入力内容をサーバー経由で担当者へ通知するフォーム（Contact Form 7 等）に置き換えます。直接のメール送信は受け付けておりません。</p>
+  </form>
+  <div id="sent" style="display:none;text-align:center;padding:40px;background:var(--azure-50);border:1px solid var(--azure-200);border-radius:18px;margin-top:20px"><h3 style="font-family:var(--font-display);color:var(--navy-800);margin:0 0 8px">送信しました</h3><p style="color:var(--color-fg-muted);margin:0">お問い合わせありがとうございます。担当者より折り返しご連絡いたします。</p></div>
+</div></section>
+<footer><div class="top"><div class="wrap cols">
+  <div class="brandcol"><div class="bl"><img src="assets/transistors-mark-white.svg" alt=""><b>transistors</b></div><p>教育・スポーツ・ビジネスをスイッチする。プロフェッショナルが集うトランジスターズ。</p></div>
+  <div class="fcol"><h4>事業内容</h4><a href="education.html">教育</a><a href="sports.html">スポーツ</a><a href="business.html">ビジネス</a><a href="appdev.html">アプリ開発</a></div>
+  <div class="fcol"><h4>会社</h4><a href="about.html">About Us</a><a href="blog.html">Blog</a><a href="contact.html">お問い合わせ</a></div>
+  
+</div></div><div class="bar"><div class="wrap">© transistors Co., Ltd.</div></div></footer>
+<script src="https://unpkg.com/lucide@latest"></script><script>lucide.createIcons();</script>
+</body></html>

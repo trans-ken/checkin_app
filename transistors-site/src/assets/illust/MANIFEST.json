@@ -1,0 +1,15 @@
+{
+  "_comment": "Google Drive上のイラストPNG。サイズが大きく(各~1MB)Web実行環境のコンテキストに取り込めないため、ローカルデプロイ時にここへ配置する。deploy/fetch-illust.sh または手動DLで取得。",
+  "drive_folder": "TRANS_HP/assets/illust",
+  "files": {
+    "hero.png": "12SXJ-zc6cl5RZFmacahNmBwtl-MZ-WUv",
+    "mission.png": "1vekom__0bLJLsqHEMA9fiFUbhjB9xm62",
+    "education.png": "1gVtRaqEcldg_PIlGulFjrdL-FpCYk9kX",
+    "sports.png": "1zpXxDOJAVROLqZytI-K8FbobOUJFwd3s",
+    "business.png": "1ypEDJv-mYh34VuI_U9n8WMkysuypBPse",
+    "appdev.png": "1z74aIj3IVUddYKcLte7YbX-jJrcFc7DM"
+  },
+  "extra_assets": {
+    "transistors-logo.png": "1Ftaw0dxOOmzCJ8Yj0b8krZZKXfpSfoyC"
+  }
+}
