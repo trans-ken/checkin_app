@@ -23,7 +23,7 @@ import threading
 
 import numpy as np
 import openvino as ov
-from openvino.runtime import opset13 as ops
+from openvino import opset13 as ops
 
 
 def build_model(level: str) -> ov.Model:
