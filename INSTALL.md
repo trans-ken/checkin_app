@@ -107,15 +107,53 @@ git clone https://github.com/trans-ken/checkin_app.git
 
 ## 4. Python 環境の構築
 
-```bash
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# Linux
-source .venv/bin/activate
+### Windows (PowerShell)
 
+#### 4-1. Python 本体のインストール
+`python` コマンドが Microsoft Store に誘導される場合は未インストールです。
+```powershell
+winget install --id Python.Python.3.12 -e --source winget
+```
+インストール後、**PowerShell を閉じて開き直し** て PATH を反映します。
+
+```powershell
+python --version   # Python 3.12.x と出ればOK
+```
+
+`winget` が使えない場合は公式インストーラー
+( https://www.python.org/downloads/windows/ ) を使い、起動時に
+**"Add python.exe to PATH"** に必ずチェックを入れてください。
+
+それでも Store に飛ばされる場合は「設定 → アプリ → アプリ実行エイリアス」で
+`python.exe` / `python3.exe` をオフにしてください。
+
+#### 4-2. 仮想環境
+```powershell
+Set-Location C:\work\checkin_app
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+`Activate.ps1` がポリシーで弾かれる場合:
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+.\.venv\Scripts\Activate.ps1
+```
+プロンプトに `(.venv)` が付けば成功。
+
+#### 4-3. パッケージ導入
+```powershell
+python -m pip install --upgrade pip
+pip install openvino numpy
+```
+
+### Linux / macOS (bash)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install --upgrade pip
-pip install openvino>=2024.4 numpy
+pip install openvino numpy
 ```
 
 `openvino` 2024.4 以降が NPU プラグインを同梱しています。
