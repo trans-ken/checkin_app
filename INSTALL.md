@@ -42,11 +42,68 @@ ls /dev/accel/accel0
 
 ## 3. リポジトリの取得
 
+### Linux / macOS (bash)
 ```bash
 git clone https://github.com/trans-ken/checkin_app.git
 cd checkin_app
 git checkout claude/loving-noether-fi2ntq
 ```
+
+### Windows (PowerShell)
+
+#### 3-1. Git for Windows の導入
+PowerShell に `git` コマンドが無い場合は先にインストールします。
+
+`winget` を使う方法（Windows 10/11 標準）:
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+インストール後、**PowerShell を一度閉じて開き直し** て PATH を読み直します。
+
+確認:
+```powershell
+git --version
+```
+
+#### 3-2. clone と branch 切り替え
+作業フォルダ（例: `C:\work`）に移動して clone します。
+```powershell
+# 作業フォルダを作成して移動
+New-Item -ItemType Directory -Force -Path C:\work | Out-Null
+Set-Location C:\work
+
+# clone
+git clone https://github.com/trans-ken/checkin_app.git
+Set-Location .\checkin_app
+
+# ブランチ切り替え
+git fetch origin claude/loving-noether-fi2ntq
+git checkout claude/loving-noether-fi2ntq
+```
+
+#### 3-3. プライベートリポジトリでエラーになる場合
+`Authentication failed` や `repository not found` が出る場合は GitHub の認証が必要です。最も簡単なのは **GitHub CLI** での認証:
+```powershell
+winget install --id GitHub.cli -e
+gh auth login          # ブラウザで GitHub にログイン
+git clone https://github.com/trans-ken/checkin_app.git
+```
+
+または個人アクセストークン (PAT) を使う場合:
+```powershell
+# username と PAT を入力するプロンプトが出る
+git clone https://github.com/trans-ken/checkin_app.git
+```
+
+#### 3-4. よくあるエラー
+| エラー | 原因 / 対処 |
+| --- | --- |
+| `git : 用語 'git' は ... 認識されません` | Git 未インストール。3-1 を実施し PowerShell を再起動 |
+| `fatal: unable to access ... SSL certificate problem` | 社内プロキシ。`git config --global http.sslBackend schannel` を実行 |
+| `fatal: unable to access ... 443: Timed out` | プロキシ環境。`git config --global http.proxy http://proxy:port` |
+| `error: RPC failed; ... HTTP 500` | 一時的なネットワーク不調。`git config --global http.postBuffer 524288000` を入れて再試行 |
+| 改行コード警告 (`LF will be replaced by CRLF`) | 無害。気になる場合は `git config --global core.autocrlf false` |
 
 ## 4. Python 環境の構築
 
